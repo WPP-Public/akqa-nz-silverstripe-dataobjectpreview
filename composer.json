@@ -1,0 +1,16 @@
+{
+	"name": "heyday/silverstripe-gridfieldpreview",
+	"type": "silverstripe-module",
+	"description": "Allows preview of dataobjects in GridField using wkhtml",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Cam Spiers",
+			"email": "cameron@heyday.co.nz"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0",
+		"heyday/silverstripe-wkhtml": "dev-master"
+	}
+}
