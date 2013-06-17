@@ -1,0 +1,23 @@
+name: gridfieldpreview
+---
+Injector:
+  SnappyImageService:
+    class: Knp\Snappy\Image
+    constructor:
+      0: '/usr/local/bin/wkhtmltoimage'
+  WkHtmlStringInputService:
+    class: Heyday\SilverStripe\WkHtml\Input\String
+    constructor:
+      0: 'Failed'
+  WkHtmlStringOutputService:
+    class: Heyday\SilverStripe\WkHtml\Output\String
+  WkHtmlGeneratorService:
+    class: Heyday\SilverStripe\WkHtml\Generator
+    constructor:
+      0: %$SnappyImageService
+      1: %$WkHtmlStringInputService
+      2: %$WkHtmlStringOutputService
+  GridFieldDataObjectPreview:
+    class: GridFieldDataObjectPreview
+    constructor:
+      0: %$WkHtmlGeneratorService
