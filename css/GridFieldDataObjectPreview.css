@@ -1,0 +1,7 @@
+.cms table.ss-gridfield-table tr td.gridfield-preview{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.cms table.ss-gridfield-table tr td.gridfield-preview img{
+    width: 100%;
+}

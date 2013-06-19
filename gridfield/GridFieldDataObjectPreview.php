@@ -3,7 +3,7 @@
 /**
  * Class GridFieldDataObjectPreview
  */
-class GridFieldDataObjectPreview implements GridField_ColumnProvider
+class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_HTMLProvider
 {
     /**
      * @var Heyday\SilverStripe\WkHtml\Generator
@@ -17,6 +17,17 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider
     ) {
         $this->generator = $generator;
     }
+    /**
+     * @param array $options
+     */
+    public function setGeneratorOptions(array $options)
+    {
+        $this->generator->getGenerator()->setOptions($options);
+    }
+    /**
+     * Start GridField_ColumnProvider
+     */
+
     /**
      * @param GridField $gridField
      * @param           $columns
@@ -43,7 +54,13 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider
     {
         if ($record instanceof GridFieldDataObjectPreviewInterface) {
             $this->generator->setInput($record->getWkHtmlInput());
-            return '<img width="500px" src="data:image/jpg;base64,' . base64_encode($this->generator->process()) . '"/>';
+            $options = $this->generator->getGenerator()->getOptions();
+            return sprintf(
+                '<img style="max-width: %spx;" src="data:image/%s;base64,%s"/>',
+                $options['width'],
+                $options['format'],
+                base64_encode($this->generator->process())
+            );
         } else {
             return false;
         }
@@ -55,7 +72,9 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider
      */
     public function getColumnAttributes($gridField, $record, $columnName)
     {
-        return array();
+        return array(
+            'class' => 'col-' . $columnName . ' gridfield-preview'
+        );
     }
     /**
      * @param GridField $gridField
@@ -64,5 +83,35 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider
     public function getColumnMetadata($gridField, $columnName)
     {
         return array('title' => $columnName);
+    }
+    /**
+     * End GridField_ColumnProvider
+     */
+
+    /**
+     * Start GridField_HTMLProvider
+     */
+    public function getHTMLFragments($gridField)
+    {
+        Requirements::css(GRIDFIELDLPREVIEW_DIR . '/css/GridFieldDataObjectPreview.css');
+        Requirements::javascript(GRIDFIELDLPREVIEW_DIR . '/javascript/GridFieldDataObjectPreview.js');
+    }
+    /**
+     * End GridField_HTMLProvider
+     */
+
+    /**
+     * @param \Heyday\SilverStripe\WkHtml\Generator $generator
+     */
+    public function setGenerator($generator)
+    {
+        $this->generator = $generator;
+    }
+    /**
+     * @return \Heyday\SilverStripe\WkHtml\Generator
+     */
+    public function getGenerator()
+    {
+        return $this->generator;
     }
 }

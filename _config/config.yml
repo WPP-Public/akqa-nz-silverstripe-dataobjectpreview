@@ -1,6 +1,18 @@
 name: gridfieldpreview
 ---
 Injector:
+  CacheCacheBackend:
+    class: CacheCache\Backends\File
+    constructor:
+      0:
+        dir: ../silverstripe-cache/gridfieldpreview
+        file_extension: .cache
+  CacheCache:
+    class: CacheCache\Cache
+    constructor:
+      0: %$CacheCacheBackend
+      1: 'gridfieldpreview'
+
   SnappyImageService:
     class: Knp\Snappy\Image
     constructor:
@@ -17,6 +29,7 @@ Injector:
       0: %$SnappyImageService
       1: %$WkHtmlStringInputService
       2: %$WkHtmlStringOutputService
+      3: %$CacheCache
   GridFieldDataObjectPreview:
     class: GridFieldDataObjectPreview
     constructor:
