@@ -1,5 +1,5 @@
 {
-	"name": "heyday/silverstripe-gridfieldpreview",
+	"name": "heyday/silverstripe-dataobjectpreview",
 	"type": "silverstripe-module",
 	"description": "Allows preview of dataobjects in GridField using wkhtml",
 	"license": "MIT",
