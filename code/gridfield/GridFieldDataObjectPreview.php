@@ -54,11 +54,11 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
      */
     public function getColumnContent($gridField, $record, $columnName)
     {
-        if ($record instanceof GridFieldDataObjectPreviewInterface) {
+        if ($record instanceof DataObjectPreviewInterface) {
             $this->generator->setInput($record->getWkHtmlInput());
             $options = $this->generator->getGenerator()->getOptions();
             return sprintf(
-                '<img style="max-width: %spx;" src="data:image/%s;base64,%s"/>',
+                '<img style="max-width: %spx;width: 100%%" src="data:image/%s;base64,%s"/>',
                 $options['width'],
                 $options['format'],
                 base64_encode($this->generator->process())
@@ -98,7 +98,6 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
     public function getHTMLFragments($gridField)
     {
         Requirements::css(GRIDFIELDLPREVIEW_DIR . '/css/GridFieldDataObjectPreview.css');
-        Requirements::javascript(GRIDFIELDLPREVIEW_DIR . '/javascript/GridFieldDataObjectPreview.js');
     }
     /**
      * End GridField_HTMLProvider

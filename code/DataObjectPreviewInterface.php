@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class GridFieldDataObjectPreviewInterface
+ * Class DataObjectPreviewInterface
  */
-interface GridFieldDataObjectPreviewInterface
+interface DataObjectPreviewInterface
 {
     /**
      * @return Heyday\SilverStripe\WkHtml\Input\InputInterface
