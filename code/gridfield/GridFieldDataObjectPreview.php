@@ -55,9 +55,9 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
     public function getColumnContent($gridField, $record, $columnName)
     {
         if ($record instanceof DataObjectPreviewInterface) {
-            $this->generator->setInput($record->getWkHtmlInput());
-            $options = $this->generator->getGenerator()->getOptions();
             try {
+                $this->generator->setInput($record->getWkHtmlInput());
+                $options = $this->generator->getGenerator()->getOptions();
                 return sprintf(
                     '<img style="max-width: %spx;width: 100%%" src="data:image/%s;base64,%s"/>',
                     $options['width'],

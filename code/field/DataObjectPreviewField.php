@@ -35,11 +35,11 @@ class DataObjectPreviewField extends DatalessField
      */
     public function Field($properties = array())
     {
-        $this->generator->setInput(
-            $this->record->getWkHtmlInput()
-        );
-        $options = $this->generator->getGenerator()->getOptions();
         try {
+            $this->generator->setInput(
+                $this->record->getWkHtmlInput()
+            );
+            $options = $this->generator->getGenerator()->getOptions();
             return sprintf(
                 '<img style="max-width: %spx;width: 100%%" src="data:image/%s;base64,%s"/>',
                 $options['width'],
