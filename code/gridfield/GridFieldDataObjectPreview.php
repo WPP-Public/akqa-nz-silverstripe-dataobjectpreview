@@ -57,12 +57,16 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
         if ($record instanceof DataObjectPreviewInterface) {
             $this->generator->setInput($record->getWkHtmlInput());
             $options = $this->generator->getGenerator()->getOptions();
-            return sprintf(
-                '<img style="max-width: %spx;width: 100%%" src="data:image/%s;base64,%s"/>',
-                $options['width'],
-                $options['format'],
-                base64_encode($this->generator->process())
-            );
+            try {
+                return sprintf(
+                    '<img style="max-width: %spx;width: 100%%" src="data:image/%s;base64,%s"/>',
+                    $options['width'],
+                    $options['format'],
+                    base64_encode($this->generator->process())
+                );
+            } catch (Exception $e) {
+                return 'Image generation failed';
+            }
         } else {
             return false;
         }
