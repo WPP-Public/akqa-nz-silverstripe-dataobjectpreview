@@ -40,6 +40,7 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
     }
     /**
      * @param GridField $gridField
+     * @return array
      */
     public function getColumnsHandled($gridField)
     {
@@ -49,6 +50,7 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
      * @param GridField  $gridField
      * @param DataObject $record
      * @param string     $columnName
+     * @return bool|string
      */
     public function getColumnContent($gridField, $record, $columnName)
     {
@@ -69,6 +71,7 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
      * @param GridField  $gridField
      * @param DataObject $record
      * @param string     $columnName
+     * @return array
      */
     public function getColumnAttributes($gridField, $record, $columnName)
     {
@@ -79,6 +82,7 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
     /**
      * @param GridField $gridField
      * @param string    $columnName
+     * @return array
      */
     public function getColumnMetadata($gridField, $columnName)
     {
