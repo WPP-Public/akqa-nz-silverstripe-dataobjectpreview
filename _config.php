@@ -1,4 +1,5 @@
 <?php
 
-define('GRIDFIELDLPREVIEW_DIR', basename(__DIR__));
-define('GRIDFIELDLPREVIEW_PATH', __DIR__);
+define('GRIDFIELDPREVIEW_DIR', basename(__DIR__));
+define('GRIDFIELDPREVIEW_PATH', __DIR__);
+define('GRIDFIELDPREVIEW_CACHE_PATH', GRIDFIELDPREVIEW_PATH . '/cache');

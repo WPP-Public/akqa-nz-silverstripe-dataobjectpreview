@@ -10,18 +10,18 @@ class DataObjectPreviewField extends DatalessField
      */
     protected $record;
     /**
-     * @var Heyday\SilverStripe\WkHtml\Generator
+     * @var Knp\Snappy\AbstractGenerator
      */
     protected $generator;
     /**
      * @param The                                   $name
      * @param DataObjectPreviewInterface            $record
-     * @param \Heyday\SilverStripe\WkHtml\Generator $generator
+     * @param \Knp\Snappy\AbstractGenerator $generator
      */
     public function __construct(
         $name,
         DataObjectPreviewInterface $record,
-        Heyday\SilverStripe\WkHtml\Generator $generator
+        Knp\Snappy\AbstractGenerator $generator
     ) {
         $this->record = $record;
         $this->generator = $generator;
@@ -36,15 +36,17 @@ class DataObjectPreviewField extends DatalessField
     public function Field($properties = array())
     {
         try {
-            $this->generator->setInput(
-                $this->record->getWkHtmlInput()
-            );
-            $options = $this->generator->getGenerator()->getOptions();
+            $content = $this->record->getWkHtmlInput()->process();
+            $options = $this->generator->getOptions();
+            $filepath = GRIDFIELDPREVIEW_CACHE_PATH.'/'.md5($content).'.'.$options['format'];
+            if (!file_exists($filepath)) {
+                $output = new \Heyday\SilverStripe\WkHtml\Output\File($filepath);
+                $output->process($content, $this->generator);
+            }
             return sprintf(
-                '<img style="max-width: %spx;width: 100%%" src="data:image/%s;base64,%s"/>',
+                '<img style="max-width: %spx;width: 100%%" src="%s"/>',
                 $options['width'],
-                $options['format'],
-                base64_encode($this->generator->process())
+                str_replace(BASE_PATH, '', $filepath)
             );
         } catch (Exception $e) {
             return 'Image generation failed';

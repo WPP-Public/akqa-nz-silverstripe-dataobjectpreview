@@ -6,28 +6,20 @@
 class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_HTMLProvider
 {
     /**
-     * @var Heyday\SilverStripe\WkHtml\Generator
+     * @var Knp\Snappy\AbstractGenerator
      */
     protected $generator;
     /**
-     * @param \Heyday\SilverStripe\WkHtml\Generator $generator
+     * @param \Knp\Snappy\AbstractGenerator $generator
      */
     public function __construct(
-        Heyday\SilverStripe\WkHtml\Generator $generator
+        Knp\Snappy\AbstractGenerator $generator
     ) {
         $this->generator = $generator;
     }
     /**
-     * @param array $options
-     */
-    public function setGeneratorOptions(array $options)
-    {
-        $this->generator->getGenerator()->setOptions($options);
-    }
-    /**
      * Start GridField_ColumnProvider
      */
-
     /**
      * @param GridField $gridField
      * @param           $columns
@@ -56,13 +48,17 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
     {
         if ($record instanceof DataObjectPreviewInterface) {
             try {
-                $this->generator->setInput($record->getWkHtmlInput());
-                $options = $this->generator->getGenerator()->getOptions();
+                $content = $record->getWkHtmlInput()->process();
+                $options = $this->generator->getOptions();
+                $filepath = GRIDFIELDPREVIEW_CACHE_PATH.'/'.md5($content).'.'.$options['format'];
+                if (!file_exists($filepath)) {
+                    $output = new \Heyday\SilverStripe\WkHtml\Output\File($filepath);
+                    $output->process($content, $this->generator);
+                }
                 return sprintf(
-                    '<img style="max-width: %spx;width: 100%%" src="data:image/%s;base64,%s"/>',
+                    '<img style="max-width: %spx;width: 100%%" src="%s"/>',
                     $options['width'],
-                    $options['format'],
-                    base64_encode($this->generator->process())
+                    str_replace(BASE_PATH, '', $filepath)
                 );
             } catch (Exception $e) {
                 return 'Image generation failed';
@@ -101,21 +97,21 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
      */
     public function getHTMLFragments($gridField)
     {
-        Requirements::css(GRIDFIELDLPREVIEW_DIR . '/css/GridFieldDataObjectPreview.css');
+        Requirements::css(GRIDFIELDPREVIEW_DIR . '/css/GridFieldDataObjectPreview.css');
     }
     /**
      * End GridField_HTMLProvider
      */
 
     /**
-     * @param \Heyday\SilverStripe\WkHtml\Generator $generator
+     * @param \Knp\Snappy\AbstractGenerator $generator
      */
     public function setGenerator($generator)
     {
         $this->generator = $generator;
     }
     /**
-     * @return \Heyday\SilverStripe\WkHtml\Generator
+     * @return \Knp\Snappy\AbstractGenerator
      */
     public function getGenerator()
     {
