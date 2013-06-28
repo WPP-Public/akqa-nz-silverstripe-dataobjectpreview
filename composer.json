@@ -12,5 +12,8 @@
 	"require": {
 		"composer/installers": "~1.0",
 		"heyday/silverstripe-wkhtml": "dev-master"
+	},
+	"suggest": {
+		"raven/raven": "Allows logging for image generation through raven and sentry"
 	}
 }

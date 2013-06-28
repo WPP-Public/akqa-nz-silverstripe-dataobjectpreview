@@ -1,5 +1,7 @@
 <?php
 
+use Heyday\SilverStripe\WkHtml\Output\File;
+
 /**
  * Class GridFieldDataObjectPreview
  */
@@ -10,12 +12,18 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
      */
     protected $generator;
     /**
+     * @var Raven_Client
+     */
+    protected $logger;
+    /**
      * @param \Knp\Snappy\AbstractGenerator $generator
      */
     public function __construct(
-        Knp\Snappy\AbstractGenerator $generator
+        Knp\Snappy\AbstractGenerator $generator,
+        Raven_Client $logger = null
     ) {
         $this->generator = $generator;
+        $this->logger = $logger;
     }
     /**
      * Start GridField_ColumnProvider
@@ -50,9 +58,14 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
             try {
                 $content = $record->getWkHtmlInput()->process();
                 $options = $this->generator->getOptions();
-                $filepath = GRIDFIELDPREVIEW_CACHE_PATH.'/'.md5($content).'.'.$options['format'];
+                $filepath = sprintf(
+                    '%s/%s.%s',
+                    GRIDFIELDPREVIEW_CACHE_PATH,
+                    md5($content),
+                    $options['format']
+                );
                 if (!file_exists($filepath)) {
-                    $output = new \Heyday\SilverStripe\WkHtml\Output\File($filepath);
+                    $output = new File($filepath);
                     $output->process($content, $this->generator);
                 }
                 return sprintf(
@@ -61,6 +74,9 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
                     str_replace(BASE_PATH, '', $filepath)
                 );
             } catch (Exception $e) {
+                if (null !== $this->logger) {
+                    $this->logger->captureException($e);
+                }
                 return 'Image generation failed';
             }
         } else {
