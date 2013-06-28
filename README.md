@@ -12,11 +12,9 @@ Provides the ability to preview DataObjects in the CMS.
 
 ## Usage
 
-DataObject that you want to preview must implement, `DataObjectPreviewInterface`, which consists of one method `getWkHtmlInput`.
+DataObjects that you want to preview must implement, `DataObjectPreviewInterface`, which consists of one method `getWkHtmlInput`.
 
 This method `getWkHtmlInput` must return an instance of `Heyday\SilverStripe\WkHtml\Input\InputInterface`
-
-### DataObjectPreviewField
 
 `getWkHtmlInput`
 
@@ -28,6 +26,8 @@ public function getWkHtmlInput()
 	);
 }
 ```
+
+### DataObjectPreviewField
 
 `getCMSFields`
 
