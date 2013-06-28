@@ -21,7 +21,7 @@ This method `getWkHtmlInput` must return an instance of `Heyday\SilverStripe\WkH
 ```php
 public function getWkHtmlInput()
 {
-	return new String(
+	return new Heyday\SilverStripe\WkHtml\Input\String(
 		'Some dataobject preview'
 	);
 }
