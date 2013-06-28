@@ -1,5 +1,4 @@
 <?php
-
 use Heyday\SilverStripe\WkHtml\Output\File;
 
 /**
@@ -57,6 +56,7 @@ class DataObjectPreviewField extends DatalessField
                 $output = new File($filepath);
                 $output->process($content, $this->generator);
             }
+
             return sprintf(
                 '<img style="max-width: %spx;width: 100%%" src="%s"/>',
                 $options['width'],
@@ -66,6 +66,7 @@ class DataObjectPreviewField extends DatalessField
             if (null !== $this->logger) {
                 $this->logger->captureException($e);
             }
+
             return 'Image generation failed';
         }
     }

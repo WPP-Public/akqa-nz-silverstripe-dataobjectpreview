@@ -1,5 +1,4 @@
 <?php
-
 use Heyday\SilverStripe\WkHtml\Output\File;
 
 /**
@@ -68,6 +67,7 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
                     $output = new File($filepath);
                     $output->process($content, $this->generator);
                 }
+
                 return sprintf(
                     '<img style="max-width: %spx;width: 100%%" src="%s"/>',
                     $options['width'],
@@ -77,6 +77,7 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
                 if (null !== $this->logger) {
                     $this->logger->captureException($e);
                 }
+
                 return 'Image generation failed';
             }
         } else {
