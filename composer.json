@@ -14,6 +14,7 @@
 		"heyday/silverstripe-wkhtml": "dev-master"
 	},
 	"suggest": {
-		"raven/raven": "Allows logging for image generation through raven and sentry"
+		"raven/raven": "Allows logging for image generation through raven and sentry",
+		"heyday/silverstripe-optimisedimage": "Decreases the size of images produced by wkhtmltoimage"
 	}
 }

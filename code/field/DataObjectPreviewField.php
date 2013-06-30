@@ -1,4 +1,5 @@
 <?php
+
 use Heyday\SilverStripe\WkHtml\Output\File;
 
 /**
@@ -19,6 +20,10 @@ class DataObjectPreviewField extends DatalessField
      */
     protected $logger;
     /**
+     * @var ImageOptimiserInterface
+     */
+    protected $optimiser;
+    /**
      * @param The                           $name
      * @param DataObjectPreviewInterface    $record
      * @param \Knp\Snappy\AbstractGenerator $generator
@@ -28,11 +33,13 @@ class DataObjectPreviewField extends DatalessField
         $name,
         DataObjectPreviewInterface $record,
         Knp\Snappy\AbstractGenerator $generator,
-        Raven_Client $logger = null
+        Raven_Client $logger = null,
+        ImageOptimiserInterface $optimiser = null
     ) {
         $this->record = $record;
         $this->generator = $generator;
         $this->logger = $logger;
+        $this->optimiser = $optimiser;
         parent::__construct(
             $name
         );
@@ -55,6 +62,9 @@ class DataObjectPreviewField extends DatalessField
             if (!file_exists($filepath)) {
                 $output = new File($filepath);
                 $output->process($content, $this->generator);
+                if (null !== $this->optimiser) {
+                    $this->optimiser->optimiseImage($filepath);
+                }
             }
 
             return sprintf(
