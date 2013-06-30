@@ -79,7 +79,7 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
                         $e,
                         array(
                             'extra' => array(
-                                'html' => $content
+                                'html' => (string) $content
                             )
                         )
                     );

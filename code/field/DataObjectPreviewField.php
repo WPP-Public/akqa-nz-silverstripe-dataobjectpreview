@@ -68,7 +68,7 @@ class DataObjectPreviewField extends DatalessField
                     $e,
                     array(
                         'extra' => array(
-                            'html' => $content
+                            'html' => (string) $content
                         )
                     )
                 );
