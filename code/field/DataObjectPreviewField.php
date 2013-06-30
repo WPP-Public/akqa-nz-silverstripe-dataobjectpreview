@@ -1,7 +1,5 @@
 <?php
 
-use Heyday\SilverStripe\WkHtml\Output\File;
-
 /**
  * Class DataObjectPreviewField
  */
@@ -12,79 +10,31 @@ class DataObjectPreviewField extends DatalessField
      */
     protected $record;
     /**
-     * @var Knp\Snappy\AbstractGenerator
+     * @var DataObjectPreviewer
      */
-    protected $generator;
+    protected $previewer;
     /**
-     * @var Raven_Client
-     */
-    protected $logger;
-    /**
-     * @var ImageOptimiserInterface
-     */
-    protected $optimiser;
-    /**
-     * @param The                           $name
-     * @param DataObjectPreviewInterface    $record
-     * @param \Knp\Snappy\AbstractGenerator $generator
-     * @param Raven_Client                  $logger
+     * @param The                        $name
+     * @param DataObjectPreviewInterface $record
+     * @param DataObjectPreviewer        $previewer
      */
     public function __construct(
         $name,
         DataObjectPreviewInterface $record,
-        Knp\Snappy\AbstractGenerator $generator,
-        Raven_Client $logger = null,
-        ImageOptimiserInterface $optimiser = null
+        DataObjectPreviewer $previewer
     ) {
         $this->record = $record;
-        $this->generator = $generator;
-        $this->logger = $logger;
-        $this->optimiser = $optimiser;
+        $this->previewer = $previewer;
         parent::__construct(
             $name
         );
     }
     /**
-     * @param array $properties
+     * @param  array  $properties
      * @return string
      */
     public function Field($properties = array())
     {
-        try {
-            $content = $this->record->getWkHtmlInput()->process();
-            $options = $this->generator->getOptions();
-            $filepath = sprintf(
-                '%s/%s.%s',
-                GRIDFIELDPREVIEW_CACHE_PATH,
-                md5($content),
-                $options['format']
-            );
-            if (!file_exists($filepath)) {
-                $output = new File($filepath);
-                $output->process($content, $this->generator);
-                if (null !== $this->optimiser) {
-                    $this->optimiser->optimiseImage($filepath);
-                }
-            }
-
-            return sprintf(
-                '<img style="max-width: %spx;width: 100%%" src="%s"/>',
-                $options['width'],
-                str_replace(BASE_PATH, '', $filepath)
-            );
-        } catch (Exception $e) {
-            if (null !== $this->logger) {
-                $this->logger->captureException(
-                    $e,
-                    array(
-                        'extra' => array(
-                            'html' => (string) $content
-                        )
-                    )
-                );
-            }
-
-            return 'Image generation failed';
-        }
+        return $this->previewer->preview($this->record);
     }
 }
