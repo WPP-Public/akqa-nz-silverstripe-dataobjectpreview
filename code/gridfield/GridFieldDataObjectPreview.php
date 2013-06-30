@@ -75,7 +75,14 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
                 );
             } catch (Exception $e) {
                 if (null !== $this->logger) {
-                    $this->logger->captureException($e);
+                    $this->logger->captureException(
+                        $e,
+                        array(
+                            'extra' => array(
+                                'html' => $content
+                            )
+                        )
+                    );
                 }
 
                 return 'Image generation failed';

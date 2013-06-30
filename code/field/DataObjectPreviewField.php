@@ -64,7 +64,14 @@ class DataObjectPreviewField extends DatalessField
             );
         } catch (Exception $e) {
             if (null !== $this->logger) {
-                $this->logger->captureException($e);
+                $this->logger->captureException(
+                    $e,
+                    array(
+                        'extra' => array(
+                            'html' => $content
+                        )
+                    )
+                );
             }
 
             return 'Image generation failed';
