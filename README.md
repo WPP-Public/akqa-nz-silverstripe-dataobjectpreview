@@ -46,7 +46,7 @@ $fields->addFieldToTab(
 	new DataObjectPreviewField(
 		'SomeDataObject',
 		$this,
-		$generator
+		new DataObjectPreviewer($generator)
 	)
 );
 ```
@@ -75,5 +75,9 @@ $generator->setOptions(
 	)
 );
 
-$config->addComponent(new GridFieldDataObjectPreview($generator));
+$config->addComponent(
+	new GridFieldDataObjectPreview(
+		new DataObjectPreviewer($generator)
+	)
+);
 ```
