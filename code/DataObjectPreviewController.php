@@ -42,13 +42,13 @@ class DataObjectPreviewController extends Controller
     {
         /** @var Config_ForClass $config */
         $config = $this->config();
-        $timeoutInterval = (int) $config->get('timeout');
+        $timeoutInterval = (int) $config->get('timeout') * 1000000;
         $loopInterval = (int) $config->get('loopInterval');
         $filename = DATAOBJECTPREVIEW_CACHE_PATH . '/' . $request->param('ID') . '.' . $request->getExtension();
 
         while ($timeoutInterval > 0) {
             if (!file_exists($filename)) {
-                sleep($loopInterval);
+                usleep($loopInterval);
                 $timeoutInterval -= $loopInterval;
             } elseif (strpos(realpath($filename), realpath(DATAOBJECTPREVIEW_CACHE_PATH)) !== 0) {
                 $this->response->setStatusCode(400);
