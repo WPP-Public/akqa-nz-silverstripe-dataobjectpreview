@@ -100,13 +100,7 @@ class DataObjectPreviewer
                         )
                     );
 
-                    // > /dev/null 2>&1 &
-
                     $process->run();
-
-                    if (!$process->isSuccessful() && null !== $this->logger) {
-                        $this->logger->captureMessage('Failed');
-                    }
 
                 } else {
                     $output = new File($imageFilepath);
