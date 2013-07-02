@@ -2,6 +2,7 @@
 
 use Heyday\SilverStripe\WkHtml\Output\File;
 use Knp\Snappy\AbstractGenerator;
+use Symfony\Component\Process\Process;
 
 /**
  * Class DataObjectPreviewer
@@ -21,18 +22,41 @@ class DataObjectPreviewer
      */
     protected $logger;
     /**
+     * @var bool
+     */
+    protected $backgroundProcessing = false;
+    /**
      * @param \Knp\Snappy\AbstractGenerator $generator
      * @param ImageOptimiserInterface       $optimiser
      * @param Raven_Client                  $logger
+     * @param null                          $backgroundProcessing
      */
     public function __construct(
         AbstractGenerator $generator,
         ImageOptimiserInterface $optimiser = null,
-        Raven_Client $logger = null
+        Raven_Client $logger = null,
+        $backgroundProcessing = null
     ) {
         $this->generator = $generator;
         $this->optimiser = $optimiser;
         $this->logger = $logger;
+        if (is_bool($backgroundProcessing)) {
+            $this->backgroundProcessing = $backgroundProcessing;
+        }
+    }
+    /**
+     * @param boolean $backgroundProcessing
+     */
+    public function setBackgroundProcessing($backgroundProcessing)
+    {
+        $this->backgroundProcessing = $backgroundProcessing;
+    }
+    /**
+     * @return boolean
+     */
+    public function getBackgroundProcessing()
+    {
+        return $this->backgroundProcessing;
     }
     /**
      *
@@ -43,25 +67,60 @@ class DataObjectPreviewer
         try {
             $content = $record->getWkHtmlInput()->process();
             $options = $this->generator->getOptions();
-            $filepath = sprintf(
+            $contentMd5 = md5($content);
+            $imageFilepath = sprintf(
                 '%s/%s.%s',
                 DATAOBJECTPREVIEW_CACHE_PATH,
-                md5($content),
+                $contentMd5,
                 $options['format']
             );
 
-            if (!file_exists($filepath)) {
-                $output = new File($filepath);
-                $output->process($content, $this->generator);
-                if (null !== $this->optimiser) {
-                    $this->optimiser->optimiseImage($filepath);
+            if (!file_exists($imageFilepath)) {
+                if ($this->backgroundProcessing) {
+                    $htmlFilepath = sprintf(
+                        '%s/%s.html',
+                        DATAOBJECTPREVIEW_CACHE_PATH,
+                        $contentMd5
+                    );
+
+                    if (!file_exists($htmlFilepath)) {
+                        file_put_contents(
+                            $htmlFilepath,
+                            $content
+                        );
+                    }
+
+                    $process = new Process(
+                        $cmd = sprintf(
+                            '%s/sake silverstripe-dataobjectpreview/generate/%s format=%s width=%s > /dev/null 2>&1 &',
+                            FRAMEWORK_PATH,
+                            $contentMd5,
+                            $options['format'],
+                            $options['width']
+                        )
+                    );
+
+                    // > /dev/null 2>&1 &
+
+                    $process->run();
+
+                    if (!$process->isSuccessful() && null !== $this->logger) {
+                        $this->logger->captureMessage('Failed');
+                    }
+
+                } else {
+                    $output = new File($imageFilepath);
+                    $output->process($content, $this->generator);
+                    if (null !== $this->optimiser) {
+                        $this->optimiser->optimiseImage($imageFilepath);
+                    }
                 }
             }
 
             return sprintf(
                 '<img style="max-width: %spx;width: 100%%" src="%s"/>',
                 $options['width'],
-                str_replace(BASE_PATH, '', $filepath)
+                str_replace(BASE_PATH, '', $imageFilepath)
             );
         } catch (Exception $e) {
             if (null !== $this->logger) {
