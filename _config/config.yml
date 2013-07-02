@@ -2,5 +2,5 @@
 Name: dataobjectpreview
 ---
 DataObjectPreviewController:
-  timeout: 30
+  timeout: 20
   loopInterval: 1

@@ -92,7 +92,7 @@ class DataObjectPreviewer
 
                     $process = new Process(
                         $cmd = sprintf(
-                            '%s/sake silverstripe-dataobjectpreview/generate/%s format=%s width=%s > /dev/null 2>&1 &',
+                            'php %s/cli-script.php silverstripe-dataobjectpreview/generate/%s format=%s width=%s > /dev/null 2>&1 &',
                             FRAMEWORK_PATH,
                             $contentMd5,
                             $options['format'],
