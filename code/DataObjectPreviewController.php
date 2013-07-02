@@ -7,9 +7,13 @@ use Heyday\SilverStripe\WkHtml\Output\File;
  */
 class DataObjectPreviewController extends Controller
 {
+    /**
+     * @var array
+     */
     private static $dependencies = array(
         'generator' => '%$ImageGenerator',
-        'optimiser' => '%$OptimisedGDBackend'
+        'optimiser' => '%$OptimisedGDBackend',
+        'logger'    => '%$Raven'
     );
     /**
      * @var Knp\Snappy\AbstractGenerator
@@ -19,6 +23,10 @@ class DataObjectPreviewController extends Controller
      * @var ImageOptimiserInterface
      */
     public $optimiser;
+    /**
+     * @var Raven_Client
+     */
+    public $logger;
     /**
      * @var array
      */
@@ -84,13 +92,29 @@ class DataObjectPreviewController extends Controller
 
         $this->generator->setOptions($options);
 
-        $this->generator->generate(
-            $contentFilename,
-            $tmpImageFilename
-        );
+        try {
+            $this->generator->generate(
+                $contentFilename,
+                $tmpImageFilename
+            );
 
-        if (null !== $this->optimiser) {
-            $this->optimiser->optimiseImage($tmpImageFilename);
+            if (null !== $this->optimiser) {
+                $this->optimiser->optimiseImage($tmpImageFilename);
+            }
+        } catch (Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->captureException(
+                    $e,
+                    array(
+                        'extra' => array(
+                            'filename' => $contentFilename
+                        )
+                    )
+                );
+            }
+
+            echo 'Image generation failed', PHP_EOL;
+            exit(1);
         }
 
         rename(
@@ -100,7 +124,7 @@ class DataObjectPreviewController extends Controller
 
         unlink($contentFilename);
 
-        echo 'Done', PHP_EOL;
+        echo 'Success', PHP_EOL;
         exit;
     }
 }
