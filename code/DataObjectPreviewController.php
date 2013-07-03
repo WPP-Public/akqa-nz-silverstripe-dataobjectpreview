@@ -100,7 +100,8 @@ class DataObjectPreviewController extends Controller
         try {
             $this->generator->generate(
                 $contentFilename,
-                $tmpImageFilename
+                $tmpImageFilename,
+                true
             );
 
             if (null !== $this->optimiser) {

@@ -103,7 +103,7 @@ class DataObjectPreviewer
                     $process->run();
 
                 } else {
-                    $output = new File($imageFilepath);
+                    $output = new File($imageFilepath, true);
                     $output->process($content, $this->generator);
                     if (null !== $this->optimiser) {
                         $this->optimiser->optimiseImage($imageFilepath);
