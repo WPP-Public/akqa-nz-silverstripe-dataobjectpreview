@@ -55,7 +55,12 @@ class DataObjectPreviewController extends Controller
                 $this->response->setBody('Bad Request');
                 return $this->response;
             } else {
-                return SS_HTTPRequest::send_file(file_get_contents($filename), basename($filename));
+                if ($config->get('xsendfile')) {
+                    $this->response->addHeader('X-SendFile', realpath($filename));
+                    return $this->response;
+                } else {
+                    return SS_HTTPRequest::send_file(file_get_contents($filename), basename($filename));
+                }
             }
         }
 
