@@ -1,7 +1,5 @@
 <?php
 
-use Heyday\SilverStripe\WkHtml\Output\File;
-
 /**
  * Class DataObjectPreviewController
  */
@@ -101,6 +99,7 @@ class DataObjectPreviewController extends Controller
             $this->generator->generate(
                 $contentFilename,
                 $tmpImageFilename,
+                array(),
                 true
             );
 

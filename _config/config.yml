@@ -2,6 +2,6 @@
 Name: dataobjectpreview
 ---
 DataObjectPreviewController:
-  timeout: 20
+  timeout: 10
   loopInterval: 200000
   xsendfile: false
