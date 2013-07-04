@@ -54,6 +54,7 @@ class DataObjectPreviewController extends Controller
                 return $this->response;
             } else {
                 if ($config->get('xsendfile')) {
+                    $this->response->addHeader('Content-type', 'image/' . $request->getExtension());
                     $this->response->addHeader('X-SendFile', realpath($filename));
                     return $this->response;
                 } else {
@@ -62,10 +63,15 @@ class DataObjectPreviewController extends Controller
             }
         }
 
-        $this->response->setStatusCode(404);
-        $this->response->setBody('Not found');
+        $notFoundImage = $config->get('notFoundImage');
 
-        return $this->response;
+        if ($config->get('xsendfile')) {
+            $this->response->addHeader('Content-type', 'image/jpeg');
+            $this->response->addHeader('X-SendFile', realpath($notFoundImage));
+            return $this->response;
+        } else {
+            return SS_HTTPRequest::send_file(file_get_contents($notFoundImage), basename($notFoundImage));
+        }
     }
     /**
      * @param SS_HTTPRequest $request
