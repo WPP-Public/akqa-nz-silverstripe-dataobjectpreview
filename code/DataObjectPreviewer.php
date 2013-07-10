@@ -45,6 +45,13 @@ class DataObjectPreviewer
         }
     }
     /**
+     *
+     */
+    public function __clone()
+    {
+        $this->generator = clone $this->generator;
+    }
+    /**
      * @param boolean $backgroundProcessing
      */
     public function setBackgroundProcessing($backgroundProcessing)
