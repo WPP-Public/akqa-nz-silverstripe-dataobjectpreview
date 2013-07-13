@@ -1,7 +1,0 @@
----
-Name: dataobjectpreviewroutes
-After: framework/routes#coreroutes
----
-Director:
-  rules:
-    'silverstripe-dataobjectpreview//$Action/$ID': 'DataObjectPreviewController'

@@ -81,7 +81,8 @@ class GridFieldDataObjectPreview implements GridField_ColumnProvider, GridField_
      */
     public function getHTMLFragments($gridField)
     {
-        Requirements::css(DATAOBJECTPREVIEW_DIR . '/css/GridFieldDataObjectPreview.css');
+        Requirements::javascript(DATAOBJECTPREVIEW_DIR . '/js/DataObjectPreviewer.js');
+        Requirements::css(DATAOBJECTPREVIEW_DIR . '/css/DataObjectPreviewer.css');
     }
     /**
      * End GridField_HTMLProvider

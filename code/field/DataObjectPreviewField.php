@@ -35,6 +35,7 @@ class DataObjectPreviewField extends DatalessField
      */
     public function Field($properties = array())
     {
+        Requirements::javascript(DATAOBJECTPREVIEW_DIR . '/js/DataObjectPreviewer.js');
         return $this->previewer->preview($this->record);
     }
 }

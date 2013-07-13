@@ -2,3 +2,6 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+.cms table.ss-gridfield-table .ss-gridfield-sorting .dataobjectpreview{
+    display: none;
+}

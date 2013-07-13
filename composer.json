@@ -1,7 +1,7 @@
 {
 	"name": "heyday/silverstripe-dataobjectpreview",
 	"type": "silverstripe-module",
-	"description": "Allows preview of dataobjects in GridField using wkhtml",
+	"description": "Allows preview of dataobjects in GridField",
 	"license": "MIT",
 	"authors": [
 		{
@@ -10,12 +10,6 @@
 		}
 	],
 	"require": {
-		"composer/installers": "~1.0",
-		"heyday/silverstripe-wkhtml": "dev-master",
-		"symfony/process": "~2.2"
-	},
-	"suggest": {
-		"raven/raven": "Allows logging for image generation through raven and sentry",
-		"heyday/silverstripe-optimisedimage": "Decreases the size of images produced by wkhtmltoimage"
+		"composer/installers": "~1.0"
 	}
 }

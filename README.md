@@ -12,18 +12,16 @@ Provides the ability to preview DataObjects in the CMS.
 
 ## Usage
 
-DataObjects that you want to preview must implement, `DataObjectPreviewInterface`, which consists of one method `getWkHtmlInput`.
+DataObjects that you want to preview must implement, `DataObjectPreviewInterface`, which consists of one method `getPreviewHtml`.
 
-This method `getWkHtmlInput` must return an instance of `Heyday\SilverStripe\WkHtml\Input\InputInterface`
+This method `getPreviewHtml` must return a string.
 
-`getWkHtmlInput`
+`getPreviewHtml`
 
 ```php
 public function getWkHtmlInput()
 {
-	return new Heyday\SilverStripe\WkHtml\Input\String(
-		'Some dataobject preview'
-	);
+	return "<html><body>Hello</body></html>";
 }
 ```
 
@@ -32,14 +30,6 @@ public function getWkHtmlInput()
 `getCMSFields`
 
 ```php
-$generator = new Knp\Snappy\Image('/bin/wkhtmltoimage');
-
-$generator->setOptions(
-	array(
-		'width'  => 500,
-		'format' => 'png'
-	)
-);
 
 $fields->addFieldToTab(
 	'Root.Main',
@@ -63,15 +53,6 @@ $fields->addFieldsToTab(
 		'Items',
 		$this->Items(),
 		$config = GridFieldConfig_RelationEditor::create()
-	)
-);
-
-$generator = new Knp\Snappy\Image('/bin/wkhtmltoimage');
-
-$generator->setOptions(
-	array(
-		'width'  => 500,
-		'format' => 'png'
 	)
 );
 

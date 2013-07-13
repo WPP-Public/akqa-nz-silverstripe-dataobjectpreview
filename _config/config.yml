@@ -1,8 +1,0 @@
----
-Name: dataobjectpreview
----
-DataObjectPreviewController:
-  timeout: 5
-  loopInterval: 200000
-  xsendfile: false
-  notFoundImage: ../silverstripe-dataobjectpreview/resources/notfound.jpg
