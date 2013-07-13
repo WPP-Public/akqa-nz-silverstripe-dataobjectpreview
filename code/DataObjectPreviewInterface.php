@@ -6,7 +6,7 @@
 interface DataObjectPreviewInterface
 {
     /**
-     * @return Heyday\SilverStripe\WkHtml\Input\InputInterface
+     * @return string
      */
     public function getPreviewHtml();
 }

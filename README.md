@@ -19,7 +19,7 @@ This method `getPreviewHtml` must return a string.
 `getPreviewHtml`
 
 ```php
-public function getWkHtmlInput()
+public function getPreviewHtml()
 {
 	return "<html><body>Hello</body></html>";
 }
