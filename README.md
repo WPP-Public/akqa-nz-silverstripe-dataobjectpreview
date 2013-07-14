@@ -62,3 +62,7 @@ $config->addComponent(
 	)
 );
 ```
+
+##License
+
+Hash Path is licensed under an [MIT license](http://heyday.mit-license.org/)
