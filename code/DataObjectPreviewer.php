@@ -6,7 +6,8 @@
 class DataObjectPreviewer
 {
     /**
-     *
+     * @param DataObjectPreviewInterface $record
+     * @return string
      */
     public function preview(DataObjectPreviewInterface $record)
     {
