@@ -19,6 +19,10 @@ class DataObjectPreviewer
             DATAOBJECTPREVIEW_CACHE_PATH,
             $contentMd5
         );
+        
+        if (!file_exists(DATAOBJECTPREVIEW_CACHE_PATH)) {
+            mkdir(DATAOBJECTPREVIEW_CACHE_PATH);
+        }
 
         if (!file_exists($htmlFilepath)) {
             file_put_contents($htmlFilepath, $content);
