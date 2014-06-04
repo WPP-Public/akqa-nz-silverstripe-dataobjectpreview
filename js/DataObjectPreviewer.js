@@ -1,5 +1,13 @@
 
 (function($) {
+
+	function getDocumentHeight(doc) {
+		return Math.max(
+			doc.documentElement.clientHeight,
+			doc.body.scrollHeight, doc.documentElement.scrollHeight,
+			doc.body.offsetHeight, doc.documentElement.offsetHeight);
+	}
+
 	$.entwine('ss', function($){
 		$('.ss-gridfield-orderable tbody .handle').entwine({
 			onmousedown: function () {
@@ -18,11 +26,11 @@
 				var $iframe = $('<iframe style="width: 100%; overflow: hidden" scrolling="no"></iframe>');
 				$iframe.bind('load', function () {
 					var iframeWindow = $iframe.get(0).contentWindow,
-						$iframeWindow = $(iframeWindow),
-						iframeBody = iframeWindow.document.body,
-						iframeHeight;
+					$iframeWindow = $(iframeWindow),
+					iframeHeight;
 					$iframeWindow.resize(function () {
-						var newHeight = iframeBody.offsetHeight;
+						var newHeight = getDocumentHeight( iframeWindow.document );
+
 						if (newHeight !== iframeHeight) {
 							$iframe.height(newHeight + "px");
 							iframeHeight = newHeight;
