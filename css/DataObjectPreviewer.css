@@ -5,3 +5,18 @@
 .cms table.ss-gridfield-table .ss-gridfield-sorting .dataobjectpreview{
     display: none;
 }
+
+.cms table.ss-gridfield-table .dataobjectpreview {
+    position: relative;
+}
+
+/* Overlay to make the iframe area clickable */
+.cms table.ss-gridfield-table .dataobjectpreview:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
