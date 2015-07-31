@@ -27,11 +27,11 @@
 				$iframe.bind('load', function () {
 					var iframeWindow = $iframe.get(0).contentWindow,
 					$iframeWindow = $(iframeWindow),
-					iframeHeight;
+					iframeHeight = 0;
 					$iframeWindow.resize(function () {
 						var newHeight = getDocumentHeight( iframeWindow.document );
 
-						if (newHeight !== iframeHeight) {
+						if (newHeight !== iframeHeight && iframeHeight < 1000) {
 							$iframe.height(newHeight + "px");
 							iframeHeight = newHeight;
 						}
