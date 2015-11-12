@@ -30,7 +30,7 @@ class DataObjectPreviewer
 
         return sprintf(
             '<div class="dataobjectpreview" data-src="%s"></div>',
-            str_replace(BASE_PATH, '', $htmlFilepath)
+            str_replace(BASE_PATH . '/', '', $htmlFilepath)
         );
     }
 }
