@@ -6,6 +6,24 @@ Provides the ability to preview DataObjects in the CMS.
 
 	$ composer require heyday/silverstripe-dataobjectpreview
 
+### Filesystem permissions
+
+The `cache/` directory in this module needs to be writable by PHP for DataObject Preview to work. Previews are rendered to file here to avoid repeated rendering of the same content.
+
+When installing via Composer, you may want to add a post-install script in your project's `composer.json` to configure these permissions. For example:
+
+```js
+{
+    // ...
+
+    "scripts": {
+        "post-install-cmd": [
+            "chmod 777 silverstripe-dataobjectpreview/cache"
+        ]
+    }
+}
+```
+
 ## Example
 
 ![DataObject Preview Example](resources/example.png?raw=true)
@@ -63,6 +81,6 @@ $config->addComponent(
 );
 ```
 
-##License
+## License
 
 SilverStripe DataObject Preview is licensed under an [MIT license](http://heyday.mit-license.org/)
